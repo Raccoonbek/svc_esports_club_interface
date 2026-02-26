@@ -171,7 +171,7 @@
 
     <script>
     async function updateRanks() {
-        // This looks for the file YOU just created in your own folder
+        // This looks for the file in your OWN GitHub folder
         const url = 'rankings.json';
         
         try {
@@ -184,7 +184,7 @@
             
             console.log("✅ Local sync successful.");
         } catch (e) {
-            console.error("⚠️ Make sure rankings.json exists in your GitHub folder.");
+            console.error("⚠️ rankings.json is missing from your folder.");
         }
     }
 
@@ -197,11 +197,12 @@
     }
 
     updateRanks();
-    // Check for changes every hour
+    // Syncs every hour
     setInterval(updateRanks, 3600000);
 </script>
 </body>
 
 </html>
+
 
 
