@@ -170,16 +170,21 @@
     </div>
 
     <script>
-    // 1. DATA RECEIVER: This function MUST be global (window.)
-    window.processEsportsRanks = function(data) {
-        if (data && data.cs2) {
-            updateSlot('cs2-list', data.cs2);
-            updateSlot('dota-list', data.dota2);
-            console.log("✅ Ranks updated automatically from cloud.");
+    async function updateRanks() {
+        const url = 'https://raw.githubusercontent.com/pashayanko/esports-api/main/rankings.json';
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (data.cs2) render('cs2-list', data.cs2);
+            if (data.dota2) render('dota-list', data.dota2);
+            console.log("✅ Ranks synced with global servers.");
+        } catch (e) {
+            console.log("Network lag. Retrying in 1 hour.");
         }
-    };
+    }
 
-    function updateSlot(id, teams) {
+    function render(id, teams) {
         const el = document.getElementById(id);
         if (!el) return;
         el.innerHTML = teams.slice(0, 5).map((team, i) => 
@@ -187,30 +192,9 @@
         ).join('');
     }
 
-    function triggerCloudUpdate() {
-        // Remove old script to avoid clutter
-        const old = document.getElementById('cloud-data');
-        if (old) old.remove();
-
-        const script = document.createElement('script');
-        script.id = 'cloud-data';
-        
-        // This is a specialized JSONP endpoint I've set up for your club
-        // The ?cachebuster ensures it doesn't show old data
-        script.src = 'https://pashayanko.github.io/esports-api/ranks_jsonp.js?cb=' + Date.now();
-        
-        script.onerror = function() {
-            console.log("⚠️ Network unreachable. Keeping current ranks.");
-        };
-
-        document.body.appendChild(script);
-    }
-
-    // Run immediately when the PC starts
-    triggerCloudUpdate();
-
-    // Auto-check for new rankings every 60 minutes
-    setInterval(triggerCloudUpdate, 3600000);
+    updateRanks();
+    setInterval(updateRanks, 3600000); // Auto-update every hour
 </script>
 </body>
+
 </html>
