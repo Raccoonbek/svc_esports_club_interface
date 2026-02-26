@@ -171,41 +171,37 @@
 
     <script>
     async function updateRanks() {
-        // Direct link to the latest rankings
-        const url = 'https://raw.githubusercontent.com/pashayanko/esports-api/main/rankings.json';
+        // This looks for the file YOU just created in your own folder
+        const url = 'rankings.json';
         
         try {
             const response = await fetch(url);
-            if (!response.ok) throw new Error('Network response was not ok');
+            if (!response.ok) throw new Error('File not found');
             const data = await response.json();
             
-            if (data.cs2) renderTeams('cs2-list', data.cs2);
-            if (data.dota2) renderTeams('dota-list', data.dota2);
+            if (data.cs2) render('cs2-list', data.cs2);
+            if (data.dota2) render('dota-list', data.dota2);
             
-            console.log("✅ Rankings updated successfully from global source.");
-        } catch (error) {
-            console.error("⚠️ Update failed, keeping current data:", error);
+            console.log("✅ Local sync successful.");
+        } catch (e) {
+            console.error("⚠️ Make sure rankings.json exists in your GitHub folder.");
         }
     }
 
-    function renderTeams(elementId, teams) {
-        const container = document.getElementById(elementId);
-        if (!container) return;
-        
-        let html = "";
-        teams.slice(0, 5).forEach((team, index) => {
-            html += `<div class="team-row"><span class="rank-num">${index + 1}</span> ${team}</div>`;
-        });
-        container.innerHTML = html;
+    function render(id, teams) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.innerHTML = teams.slice(0, 5).map((team, i) => 
+            `<div class="team-row"><span class="rank-num">${i + 1}</span> ${team}</div>`
+        ).join('');
     }
 
-    // Initial load
     updateRanks();
-
-    // Auto-refresh every 60 minutes
+    // Check for changes every hour
     setInterval(updateRanks, 3600000);
 </script>
 </body>
 
 </html>
+
 
