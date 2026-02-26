@@ -171,7 +171,7 @@
 
     <script>
     async function updateRanks() {
-        // This looks for the file in your OWN GitHub folder
+        // This looks for 'rankings.json' in YOUR OWN GitHub folder
         const url = 'rankings.json';
         
         try {
@@ -179,16 +179,16 @@
             if (!response.ok) throw new Error('File not found');
             const data = await response.json();
             
-            if (data.cs2) render('cs2-list', data.cs2);
-            if (data.dota2) render('dota-list', data.dota2);
+            if (data.cs2) renderTeams('cs2-list', data.cs2);
+            if (data.dota2) renderTeams('dota-list', data.dota2);
             
-            console.log("✅ Local sync successful.");
+            console.log("✅ Sync successful from your own repository.");
         } catch (e) {
-            console.error("⚠️ rankings.json is missing from your folder.");
+            console.error("⚠️ Make sure rankings.json exists in your GitHub folder.");
         }
     }
 
-    function render(id, teams) {
+    function renderTeams(id, teams) {
         const el = document.getElementById(id);
         if (!el) return;
         el.innerHTML = teams.slice(0, 5).map((team, i) => 
@@ -196,13 +196,16 @@
         ).join('');
     }
 
+    // Run on startup
     updateRanks();
-    // Syncs every hour
+
+    // Auto-update every 60 minutes
     setInterval(updateRanks, 3600000);
 </script>
 </body>
 
 </html>
+
 
 
 
