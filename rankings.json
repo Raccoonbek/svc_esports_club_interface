@@ -1,4 +1,28 @@
 {
-  "cs2": ["team 1", "team 2", "team 3", "team 4", "team 5"],
-  "dota2": ["team Toxir", "eng zo'ri ", "team 3", "GG", "Tundra"]
+  "cs2": [
+    "Vitality",
+    "Spirit",
+    "MOUZ",
+    "G2",
+    "FaZe"
+  ],
+  "dota2": [
+    "Falcons",
+    "Liquid",
+    "Spirit",
+    "Gaimin",
+    "Tundra"
+  ],
+  "brackets": [
+    {
+      "stage": "Major Quarter-Final",
+      "team1": "NAVI",
+      "team2": "Cloud9"
+    },
+    {
+      "stage": "Major Semi-Final",
+      "team1": "Spirit",
+      "team2": "FaZe"
+    }
+  ]
 }
